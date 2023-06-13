@@ -1,0 +1,39 @@
+{
+  "name": "next-leaflet-starter",
+  "homepage": "https://next-leaflet-starter.netlify.app",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": "Colby Fayock <hello@colbyfayock.com>",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "export": "next build && next export",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/colbyfayock/next-leaflet-starter"
+  },
+  "bugs": {
+    "url": "https://github.com/colbyfayock/next-leaflet-starter/issues"
+  },
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "chart.js": "^4.3.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "eslint": "^8.41.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-next": "^13.4.4",
+    "eslint-config-prettier": "^8.8.0",
+    "firebase": "8.9",
+    "leaflet": "^1.9.3",
+    "next": "^13.0.7",
+    "prettier": "^2.8.8",
+    "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.7.1",
+    "react-leaflet": "^4.2.0",
+    "sass": "^1.57.0"
+  }
+}
