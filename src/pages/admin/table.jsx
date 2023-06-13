@@ -9,8 +9,16 @@ import Footer from '../../components/Footer/Footer';
 export default function Home() {
   const [area, setArea] = useState([]);
   const [selectedArea, setSelectedArea] = useState();
-  const ref = database.ref('area');
   const [showModalForm, setShowModalForm] = useState(false);
+  const ref = database.ref('area');
+
+  useEffect(() => {
+    ref.on('value', (snapshot) => {
+      const data = snapshot.val();
+      console.log(data);
+      setArea(data);
+    });
+  }, []);
 
   const handleShowForm = (sArea) => {
     setShowModalForm(true);
@@ -32,33 +40,24 @@ export default function Home() {
     return 'table-light';
   };
 
-  const updateArea = (event) => {
-    const ref2 = database.ref('area_copy');
+  const updateArea = () => {
     const tempArea = area;
-    tempArea[selectedArea.idx] = selectedArea;
+    tempArea[selectedArea.idx] = { ...selectedArea, status: Number(selectedArea.status) };
     delete tempArea[selectedArea.idx].idx;
-    console.log(tempArea);
-    event.preventDefault();
+    ref.set(tempArea);
   };
 
   const deleteArea = (park) => {
-    const ref2 = database.ref('area');
-    ref2.set(area.filter((a) => a.name !== park.name));
+    ref.set(area.filter((a) => a.name !== park.name));
   };
 
-  useEffect(() => {
-    ref.on('value', (snapshot) => {
-      const data = snapshot.val();
-      setArea(data);
-    });
-  }, []);
   return (
     <div style={{ backgroundColor: '#f8f2fc', margin: 0 }}>
       {showModalForm && (
         <div className="modal" style={{ display: 'block' }}>
           <div className="modal-dialog" role="document">
             <div className="modal-content">
-              <form onSubmit={updateArea} method="POST">
+              <form onSubmit={(event) => { event.preventDefault(); updateArea(); handleCloseForm(); }}>
                 <div className="modal-content">
                   <div className="modal-header">
                     <h5 className="modal-title">Update Area</h5>
@@ -67,29 +66,29 @@ export default function Home() {
                   <div className="modal-body">
                     <div className=" mb-3">
                       <label className="form-label">Name</label>
-                      <input type="text" className="form-control" onChange={(event) => setSelectedArea({ ...selectedArea, name: event.target.value })} onChange={(event) => setSelectedArea({ ...selectedArea, name: event.target.value })} value={selectedArea.name} />
+                      <input disabled type="text" className="form-control" onChange={(event) => setSelectedArea({ ...selectedArea, name: event.target.value })} onChange={(event) => setSelectedArea({ ...selectedArea, name: event.target.value })} value={selectedArea.name} />
                     </div>
                     <div className=" mb-3">
                       <label className="form-label">Latitude</label>
-                      <input type="number" className="form-control" onChange={(event) => setSelectedArea({ ...selectedArea, latitude: event.target.value })} value={selectedArea.latitude} />
+                      <input disabled type="number" className="form-control" onChange={(event) => setSelectedArea({ ...selectedArea, latitude: event.target.value })} value={selectedArea.latitude} />
                     </div>
                     <div className=" mb-3">
                       <label className="form-label">Longitude</label>
-                      <input type="number" className="form-control" onChange={(event) => setSelectedArea({ ...selectedArea, longitude: event.target.value })} value={selectedArea.longitude} />
+                      <input disabled type="number" className="form-control" onChange={(event) => setSelectedArea({ ...selectedArea, longitude: event.target.value })} value={selectedArea.longitude} />
                     </div>
                     <div className=" mb-3">
                       <label className="form-label">Current Slot</label>
-                      <input type="number" className="form-control" onChange={(event) => setSelectedArea({ ...selectedArea, current_slot: event.target.value })} value={selectedArea.current_slot} />
+                      <input disabled type="number" className="form-control" onChange={(event) => setSelectedArea({ ...selectedArea, current_slot: event.target.value })} value={selectedArea.current_slot} />
                     </div>
                     <div className=" mb-3">
                       <label className="form-label">Max Slot</label>
-                      <input type="number" className="form-control" onChange={(event) => setSelectedArea({ ...selectedArea, max_slot: event.target.value })} value={selectedArea.max_slot} />
+                      <input disabled type="number" className="form-control" onChange={(event) => setSelectedArea({ ...selectedArea, max_slot: event.target.value })} value={selectedArea.max_slot} />
                     </div>
                     <div className="mb-3">
                       <label className="form-label">Status</label>
                       <select className="form-select" onChange={(event) => setSelectedArea({ ...selectedArea, status: event.target.value })} value={selectedArea.status}>
-                        <option value="pending">opened</option>
-                        <option value="approved">closed</option>
+                        <option value={1}>opened</option>
+                        <option value={0}>closed</option>
                       </select>
                     </div>
                   </div>
